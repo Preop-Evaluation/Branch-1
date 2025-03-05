@@ -21,6 +21,10 @@ def signin_page():
 def signup_page():
   return render_template('signup.html')
 
+@auth_views.route('/reset_password', methods=['GET'])
+def reset_page():
+  return render_template('Reset_request.html', title= 'Reset Request')
+
 
 
 '''
@@ -87,6 +91,15 @@ def logout_action():
     flash('Logged Out!')
     return redirect('/')
 
+@auth_views.route('/reset_password', methods = ['POST'])
+def reset_action():
+
+  data = request.form
+
+  patient = Patient.query.filter_by(email = data['email']).first()    
+  return redirect('/reset_password')
+
+
 '''
 API Routes
 '''
@@ -123,5 +136,4 @@ def user_login_api():
 # @jwt_required()
 # def identify_user_action():
 #     return jsonify({'message': f"username: {jwt_current_user.username}, id : {jwt_current_user.id}"})
-
 
