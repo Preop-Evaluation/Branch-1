@@ -102,3 +102,12 @@ def get_default_questionnaire():
         
     ]
     return default_questions
+
+def get_all_flattened_questions():
+    flat_questions = []
+    for question in get_default_questionnaire():
+        flat_questions.append(question)
+        if 'follow_ups' in question:
+            flat_questions.extend(question['follow_ups'])
+    return flat_questions
+
