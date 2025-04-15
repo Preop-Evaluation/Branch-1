@@ -59,14 +59,12 @@ def update_questionnaire_doctor_action(questionnaire_id):
         patient = Patient.query.get(questionnaire.patient_id)
         anesthesiologists = Anesthesiologist.query.all()
 
-        # ✅ Correct flagged questions reference
         flagged_str = ", ".join(questionnaire.doctor_flagged_questions) if questionnaire.doctor_flagged_questions else "None"
 
         if patient:
             ast_tz = pytz.timezone("America/Port_of_Spain")
             current_dt = questionnaire.submitted_date.astimezone(ast_tz).strftime("%d/%m/%Y - %I:%M %p") if questionnaire.submitted_date else ""
 
-            # ✅ Email to patient
             msg = Message(
                 subject="Your Questionnaire Needs Attention (Doctor Review)",
                 sender=current_app.config['MAIL_USERNAME'],
@@ -82,7 +80,6 @@ def update_questionnaire_doctor_action(questionnaire_id):
             )
             mail.send(msg)
 
-            # ✅ Email to anesthesiologist(s)
             for anesth in anesthesiologists:
                 msg_a = Message(
                     subject=f"Doctor flagged patient {patient.firstname}",
